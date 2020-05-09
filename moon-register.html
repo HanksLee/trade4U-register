@@ -185,11 +185,12 @@
   <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
   <script crossorigin="anonymous" integrity="sha384-5B8/4F9AQqp/HCHReGLSOWbyAOwnJsPrvx6C0+VPUr44Olzi99zYT1xbVh+ZanQJ"
     src="https://lib.baomitu.com/fetch/3.0.0/fetch.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+    <!-- production version, optimized for size and speed -->
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script src="https://unpkg.com/vue-toasted"></script>
 
-  <!-- production version, optimized for size and speed -->
-  <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+
 
 </head>
 
@@ -297,7 +298,7 @@
 
         var hostArr = location.host.split('.');
 
-        this.baseURL = `http://api.${hostArr[hostArr.length - 2]}.com`;
+        // this.baseURL = `http://api.${hostArr[hostArr.length - 2]}.com`;
 
         this.getAgreement();
       },
