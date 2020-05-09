@@ -195,16 +195,16 @@
   <div id="app">
     <div v-show='showRegisterPage' class="register-page">
       <section class="form-field">
-        <label for="phone">手機號</label>
-        <input type="text" v-model='phone' placeholder="請輸入手機號">
+        <label for="phone">手机号</label>
+        <input type="text" v-model='phone' placeholder="请输入手机号">
       </section>
       <section :class='["form-field", fieldActive == "code" ? "border-bottom-active" : "", "show-border"]'>
-        <label for="code">驗證碼</label>
+        <label for="code">验证码</label>
         <section :class='["form-input-group"]'>
-          <input class='hide-border' type="text" v-model='code' placeholder="請輸入驗證碼" @focus="onFieldFocus('code')"
+          <input class='hide-border' type="text" v-model='code' placeholder="请输入验证码" @focus="onFieldFocus('code')"
             @blur="onFieldBlur">
           <button @click="sendSMS" :disabled="sending ? true : false">
-            發送短信
+            发送短信
             {{ sending ? clock + 's' : ''}}
           </button>
         </section>
@@ -212,32 +212,32 @@
       <section class="form-field flex-row">
         <section class="form-input-group flex-column">
           <label for="">姓</label>
-          <input type="text" v-model='last_name' placeholder="請輸入姓氏">
+          <input type="text" v-model='last_name' placeholder="请输入姓氏">
         </section>
         <section class="form-input-group flex-column">
           <label for="">名</label>
-          <input type="text" v-model='first_name' placeholder="請輸入姓名">
+          <input type="text" v-model='first_name' placeholder="请输入姓名">
         </section>
       </section>
       <section class="form-field">
-        <label for="password">密碼</label>
-        <input type="text" v-model='password' placeholder="請輸入6-20位字母和數字組合的密碼">
+        <label for="password">密码</label>
+        <input type="text" v-model='password' placeholder="请输入6-20位字母和数字组合的密码">
       </section>
       <section class="form-field">
-        <label for="confirm_password">確認密碼</label>
-        <input type="text" v-model='confirm_password' placeholder="請再次輸入密碼">
+        <label for="confirm_password">确认密码</label>
+        <input type="text" v-model='confirm_password' placeholder="请再次输入密码">
       </section>
       <section class="form-field">
-        <label for="invite_code">邀請碼</label>
-        <input type="text" v-model='invite_code' placeholder="請填寫機構/IB經紀人編碼(邀請碼)">
+        <label for="invite_code">邀请码</label>
+        <input type="text" v-model='invite_code' placeholder="请填写机构/IB经纪人编码(邀请码)">
       </section>
       <section class='register-declaration'>
-        我已經閱讀並同意&nbsp;<a @click="togglePage">
-          <strong>合作協議</strong>
+        我已經阅读并同意&nbsp;<a @click="togglePage">
+          <strong>合作协议</strong>
         </a>
       </section>
       <section class="submit" @click="onSubmit">
-        <button>註冊</button>
+        <button>注册</button>
       </section>
     </div>
 
@@ -310,7 +310,7 @@
           const payload = { phone: this.phone };
 
           if (!this.phone) {
-            return this.$toasted.show('請輸入手機號');
+            return this.$toasted.show('请输入手机号');
           }
 
           fetch(url, {
@@ -327,7 +327,7 @@
                 return this.$toasted.show(res.message);
               }
 
-              this.$toasted.show('驗證碼發送成功~');
+              this.$toasted.show('验证码发送成功~');
               this.sending = true;
               this.startTimer();
               this.key = res.key;
@@ -335,9 +335,9 @@
         },
         startTimer: function() {
           var timer = setInterval(() => {
-            if (this.clock == 0) {
+            if (this.clock <= 0) {
               clearInterval(timer);
-              this.sending = true;
+              this.sending = false;
             }
             this.clock--;
           }, 1000);
@@ -382,43 +382,43 @@
                 return this.$toasted.show(res.message);
               }
 
-              this.$toasted.show('註冊成功~');
+              this.$toasted.show('注册成功~');
             });
         },
         getValidation: function(payload) {
           var errMsg = '';
 
           if (!payload.phone) {
-            return '請輸入手機號';
+            return '请输入手机号';
           }
 
           if (payload.phone.length != 11) {
-            return '請輸入 11 位手機號';
+            return '请输入 11 位手机号';
           }
 
           if (!payload.code) {
-            return '請輸入驗證碼';
+            return '请输入验证码';
           }
 
           if (!payload.first_name) {
-            return '請輸入姓氏';
+            return '请输入姓氏';
 
           }
 
           if (!payload.last_name) {
-            return '請輸入姓名';
+            return '请输入姓名';
           }
 
           if(!payload.password) {
-            return '請輸入密碼'
+            return '请输入密码';
           }
 
           if (payload.password.length < 6 || payload.password.length > 20) {
-            return '請輸入 6-20 位字母和數字組合的密碼';
+            return '请输入 6-20 位字母和数字组合和密码';
           }
 
           if (payload.password != this.confirm_password) {
-            return '兩次輸入的密碼有誤';
+            return '兩次输入的密码有误';
           }
 
           return errMsg;
