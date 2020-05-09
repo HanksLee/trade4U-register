@@ -175,6 +175,7 @@
       width: 30px;
       height: 30px;
       left: 10px;
+      cursor: pointer;
     }
 
     .agreement-page .agreement-content {
@@ -230,7 +231,7 @@
       </section>
       <section class="form-field">
         <label for="invite_code">邀请码</label>
-        <input type="text" v-model='invite_code' placeholder="请填写机构/IB经纪人编码(邀请码)">
+        <input :disabled="disabledInviteCode" type="text" v-model='invite_code' placeholder="请填写机构/IB经纪人编码(邀请码)">
       </section>
       <section class='register-declaration'>
         我已經阅读并同意&nbsp;<a @click="togglePage">
@@ -267,7 +268,6 @@
           baseURL: 'http://api.cangshu360.com',
           phone: undefined,
           fieldActive: '',
-          smsKey: undefined,
           code: undefined,
           last_name: undefined,
           first_name: undefined,
@@ -281,12 +281,14 @@
           clock: 60,
           showRegisterPage: true,
           agreement: null,
+          disabledInviteCode: false,
         }
       },
       created: function () {
         var searchObj = this.parseSearch(location.search);
         if (searchObj.invite_code) {
           this.invite_code = searchObj.invite_code;
+          this.disabledInviteCode = true;
         }
 
         this.getAgreement();
@@ -302,6 +304,19 @@
           }
 
           return _searchObj;
+        },
+        resetForm: function() {
+          this.phone = undefined;
+          this.code = undefined;
+          this.last_name = undefined;
+          this.first_name = undefined;
+          this.last_name = undefined;
+          this.password = undefined;
+          this.confirm_password = undefined;
+          this.key = undefined;
+          this.code = undefined;
+          this.invite_code = undefined;
+          this.sending = false;
         },
         togglePage: function() {
           this.showRegisterPage = !this.showRegisterPage;
@@ -339,6 +354,7 @@
             if (this.clock <= 0) {
               clearInterval(timer);
               this.sending = false;
+              this.clock = 60;
             }
             this.clock--;
           }, 1000);
@@ -384,6 +400,7 @@
               }
 
               this.$toasted.show('注册成功~');
+              this.resetForm();
             });
         },
         getValidation: function(payload) {
