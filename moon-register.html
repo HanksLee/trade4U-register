@@ -222,11 +222,11 @@
       </section>
       <section class="form-field">
         <label for="password">密码</label>
-        <input type="text" v-model.trim="password" placeholder="请输入6-20位字母和数字组合的密码" />
+        <input type="password" v-model.trim="password" placeholder="请输入6-20位字母和数字组合的密码" />
       </section>
       <section class="form-field">
         <label for="confirm_password">确认密码</label>
-        <input type="text" v-model.trim="confirm_password" placeholder="请再次输入密码" />
+        <input type="password" v-model.trim="confirm_password" placeholder="请再次输入密码" />
       </section>
       <section class="form-field">
         <label for="invite_code">邀请码</label>
@@ -341,8 +341,16 @@
           const url = `${this.baseURL}/api/trader/send-register-sms`;
           const payload = { phone: this.phone };
 
-          if (!this.phone) {
+          if (!this.phone.trim()) {
             return this.$toasted.show("请输入手机号");
+          }
+
+          if (!this.phone.trim().length != 11) {
+            return this.$toasted.show("请输入 11 位手机号");
+          }
+
+          if (/^[0-9]*$/.test(this.phone.trim()) == false) {
+            return this.$toasted.show("手机号只能有数字");
           }
 
           fetch(url, {
@@ -427,7 +435,11 @@
             return "请输入手机号";
           }
 
-          if (payload.phone.length != 11) {
+          if (/^[0-9]*$/.test(this.phone.trim()) == false) {
+            return this.$toasted.show("手机号只能有数字");
+          }
+
+          if (payload.phone.trim().length != 11) {
             return "请输入 11 位手机号";
           }
 
