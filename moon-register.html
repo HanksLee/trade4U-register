@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WeTrader</title>
+  <title>Trade4U</title>
   <style>
     * {
       box-sizing: border-box;
@@ -341,15 +341,17 @@
           const url = `${this.baseURL}/api/trader/send-register-sms`;
           const payload = { phone: this.phone };
 
-          if (!this.phone.trim()) {
+          console.log(this.phone.length)
+
+          if (!this.phone) {
             return this.$toasted.show("请输入手机号");
           }
 
-          if (!this.phone.trim().length != 11) {
+          if (this.phone.length != 11) {
             return this.$toasted.show("请输入 11 位手机号");
           }
 
-          if (/^[0-9]*$/.test(this.phone.trim()) == false) {
+          if (/^[0-9]*$/.test(this.phone) == false) {
             return this.$toasted.show("手机号只能有数字");
           }
 
@@ -435,11 +437,11 @@
             return "请输入手机号";
           }
 
-          if (/^[0-9]*$/.test(this.phone.trim()) == false) {
+          if (/^[0-9]*$/.test(this.phone) == false) {
             return this.$toasted.show("手机号只能有数字");
           }
 
-          if (payload.phone.trim().length != 11) {
+          if (payload.phone.length != 11) {
             return "请输入 11 位手机号";
           }
 
