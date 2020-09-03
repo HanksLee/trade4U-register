@@ -1,510 +1,551 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Trade4U</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    html,
-    body {
-      padding: 0;
-      margin: 0;
-      background: #1a1c20;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: -apple-system, BlinkMacSystemFont, PingFang SC, Helvetica,
-        Tahoma, Arial, "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑",
-        SimSun, "宋体", Heiti, "黑体", sans-serif;
-    }
-
-    input {
-      background: unset;
-      border: none;
-      outline: none;
-    }
-
-    button {
-      outline: none;
-      border: none;
-    }
-
-    .hide-border {
-      border-bottom: none !important;
-    }
-
-    .show-border {
-      border-bottom: 1px solid #fff !important;
-    }
-
-    .border-bottom-active {
-      border-bottom: 1px solid #f2e205 !important;
-    }
-
-    .register-page {
-      width: 500px;
-      padding-top: 100px;
-      padding-bottom: 40px;
-    }
-
-    @media (max-width: 900px) {
-      .register-page {
-        width: 100vw;
-        padding: 20px;
-        overflow: hidden;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trade4U</title>
+    <style>
+      * {
+        box-sizing: border-box;
       }
-    }
 
-    .register-declaration {
-      display: flex;
-      justify-content: center;
-      color: #fff;
-      align-items: center;
-      font-size: 16px;
-    }
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+        background: #1a1c20;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: -apple-system, BlinkMacSystemFont, PingFang SC, Helvetica,
+          Tahoma, Arial, "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑",
+          SimSun, "宋体", Heiti, "黑体", sans-serif;
+      }
 
-    .register-declaration svg {
-      width: 20px;
-      height: 20px;
-      margin-right: 10px;
-    }
+      input {
+        background: unset;
+        border: none;
+        outline: none;
+      }
 
-    .register-declaration a {
-      cursor: pointer;
-      text-decoration: underline;
-    }
+      button {
+        outline: none;
+        border: none;
+      }
 
-    .form-field {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 32px;
-      justify-content: space-between;
-    }
+      .hide-border {
+        border-bottom: none !important;
+      }
 
-    .form-field.flex-row {
-      flex-direction: row;
-    }
+      .show-border {
+        border-bottom: 1px solid #fff !important;
+      }
 
-    .form-field>label {
-      color: #fff;
-      font-weight: 500;
-      margin-bottom: 10px;
-    }
+      .border-bottom-active {
+        border-bottom: 1px solid #f2e205 !important;
+      }
 
-    .form-field input {
-      font-size: 16px;
-      padding-bottom: 10px;
-      color: #fff;
-      transition: all 0.3s;
-      border-bottom: 1px solid #fff;
-    }
+      .register-page {
+        width: 500px;
+        padding-top: 100px;
+        padding-bottom: 40px;
+      }
 
-    .form-field input:focus {
-      border-bottom: 1px solid #f2e205 !important;
-    }
-
-    .form-field.show-border input:focus {
-      border-bottom: none !important;
-    }
-
-    .form-field>.form-input-group {
-      display: flex;
-      justify-content: space-between;
-      /* border-bottom: 1px solid #FFF; */
-    }
-
-    .form-field>.form-input-group.flex-column {
-      flex-direction: column;
-      margin-bottom: 32px;
-      flex-basis: 48%;
-    }
-
-    .form-field>.form-input-group.flex-column label {
-      color: #fff;
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
-
-    .form-field>.form-input-group input {
-      flex: 1;
-    }
-
-    .form-field>.form-input-group button {
-      background-color: #373e47;
-      font-size: 17px;
-      color: #fff;
-      padding: 3px 16px;
-      cursor: pointer;
-      margin-bottom: 10px;
-    }
-
-    .submit {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-top: 82px;
-    }
-
-    .submit button {
-      color: #f2e205;
-      border: 3px solid #f2e205;
-      font-style: 18px;
-      font-weight: 500;
-      padding: 16px 50px;
-      background-color: #1a1c20;
-      outline: none;
-      cursor: pointer;
-    }
-
-    .agreement-page {
-      color: #fff;
-      text-align: center;
-      width: 100vw;
-    }
-
-    .agreement-page .agreement-title {
-      font-size: 20px;
-      position: relative;
-    }
-
-    .agreement-page .agreement-title svg {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      left: 10px;
-      cursor: pointer;
-    }
-
-    .agreement-page .agreement-content {
-      font-size: 16px;
-    }
-  </style>
-  <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
-  <script crossorigin="anonymous" integrity="sha384-5B8/4F9AQqp/HCHReGLSOWbyAOwnJsPrvx6C0+VPUr44Olzi99zYT1xbVh+ZanQJ"
-    src="https://lib.baomitu.com/fetch/3.0.0/fetch.min.js"></script>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
-  <!-- production version, optimized for size and speed -->
-  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-  <script src="https://unpkg.com/vue-toasted"></script>
-</head>
-
-<body>
-  <div id="app">
-    <div v-show="showRegisterPage" class="register-page">
-      <section class="form-field">
-        <label for="phone">手机号</label>
-        <input type="text" v-model.trim="phone" placeholder="请输入手机号" />
-      </section>
-      <section :class='["form-field", fieldActive == "code" ? "border-bottom-active" : "", "show-border"]'>
-        <label for="code">验证码</label>
-        <section :class='["form-input-group"]'>
-          <input class="hide-border" type="text" v-model.trim="code" placeholder="请输入验证码" @focus="onFieldFocus('code')"
-            @blur="onFieldBlur" />
-          <button @click="sendSMS" :disabled="sending ? true : false">
-            发送短信 {{ sending ? clock + 's' : ''}}
-          </button>
-        </section>
-      </section>
-      <section class="form-field flex-row">
-        <section class="form-input-group flex-column">
-          <label for="">姓</label>
-          <input type="text" v-model.trim="last_name" placeholder="请输入姓氏" />
-        </section>
-        <section class="form-input-group flex-column">
-          <label for="">名</label>
-          <input type="text" v-model.trim="first_name" placeholder="请输入姓名" />
-        </section>
-      </section>
-      <section class="form-field">
-        <label for="password">密码</label>
-        <input type="password" v-model.trim="password" placeholder="请输入6-20位字母和数字组合的密码" />
-      </section>
-      <section class="form-field">
-        <label for="confirm_password">确认密码</label>
-        <input type="password" v-model.trim="confirm_password" placeholder="请再次输入密码" />
-      </section>
-      <section class="form-field">
-        <label for="invite_code">邀请码</label>
-        <input :disabled="disabledInviteCode" type="text" v-model.trim="invite_code" placeholder="请填写机构/IB经纪人编码(邀请码)" />
-      </section>
-      <section class="register-declaration">
-        <input type="checkbox" id="isRead" value="1" v-model="checkedAgreement" />
-        我已经阅读并同意&nbsp;<a @click="togglePage">
-          <strong>合作协议</strong>
-        </a>
-      </section>
-      <section class="submit" @click="onSubmit">
-        <button>注册</button>
-      </section>
-    </div>
-
-    <div class="agreement-page" v-show="!showRegisterPage">
-      <div class="agreement-title">
-        <span @click="togglePage">
-          <svg t="1588953794190" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-            p-id="1160" width="200" height="200">
-            <path
-              d="M640 674.133333l-166.4-166.4L640 341.333333a41.258667 41.258667 0 0 0 0-59.733333 41.258667 41.258667 0 0 0-59.733333 0l-196.266667 196.266667a41.258667 41.258667 0 0 0 0 59.733333l196.266667 196.266667A42.24 42.24 0 1 0 640 674.133333z"
-              fill="#FFFFFF" p-id="1161"></path>
-          </svg>
-        </span>
-
-        <p>{{agreement.title}}</p>
-      </div>
-      <div class="agreement-content" v-html="agreement.content"></div>
-    </div>
-  </div>
-  <script>
-    const getHeaders = function (
-      config = { "Content-Type": "application/json" }
-    ) {
-      return new Headers(config);
-    };
-    Vue.use(Toasted, {
-      position: "top-center",
-      duration: 1000,
-    });
-
-    var app = new Vue({
-      el: "#app",
-      data: function () {
-        return {
-          baseURL: "http://api.cangshu360.com",
-          phone: undefined,
-          fieldActive: "",
-          code: undefined,
-          last_name: undefined,
-          first_name: undefined,
-          last_name: undefined,
-          password: undefined,
-          confirm_password: undefined,
-          key: undefined,
-          code: undefined,
-          invite_code: undefined,
-          sending: false,
-          clock: 60,
-          showRegisterPage: true,
-          agreement: null,
-          disabledInviteCode: false,
-          checkedAgreement: [],
-        };
-      },
-
-      created: function () {
-        var searchObj = this.parseSearch(location.search);
-
-        if (searchObj.invite_code) {
-          this.invite_code = searchObj.invite_code;
-          this.disabledInviteCode = true;
+      @media (max-width: 900px) {
+        .register-page {
+          width: 100vw;
+          padding: 20px;
+          overflow: hidden;
         }
+      }
 
-        var hostArr = location.host.split(".");
+      .register-declaration {
+        display: flex;
+        justify-content: center;
+        color: #fff;
+        align-items: center;
+        font-size: 16px;
+      }
 
-        this.baseURL = `${window.location.protocol}//api.${hostArr[hostArr.length - 2]}.com`;
+      .register-declaration svg {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+      }
 
-        this.getAgreement();
-      },
-      methods: {
-        parseSearch: function (raw) {
-          var _searchObj = {};
-          if (!raw) return _searchObj;
-          var search = raw.substring(1).split("&");
-          for (var i = 0; i < search.length; i++) {
-            var items = search[i].split("=");
-            _searchObj[items[0]] = items[1];
-          }
+      .register-declaration a {
+        cursor: pointer;
+        text-decoration: underline;
+      }
 
-          return _searchObj;
-        },
-        resetForm: function () {
-          this.phone = undefined;
-          this.code = undefined;
-          this.last_name = undefined;
-          this.first_name = undefined;
-          this.last_name = undefined;
-          this.password = undefined;
-          this.confirm_password = undefined;
-          this.key = undefined;
-          this.code = undefined;
-          this.invite_code = undefined;
-          this.sending = false;
-        },
-        togglePage: function () {
-          this.showRegisterPage = !this.showRegisterPage;
-        },
-        sendSMS: function () {
-          const url = `${this.baseURL}/api/trader/send-register-sms`;
-          const payload = { phone: this.phone };
+      .form-field {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 32px;
+        justify-content: space-between;
+      }
 
-          // console.log(this.phone.length)
+      .form-field.flex-row {
+        flex-direction: row;
+      }
 
-          if (!this.phone) {
-            return this.$toasted.show("请输入手机号");
-          }
+      .form-field > label {
+        color: #fff;
+        font-weight: 500;
+        margin-bottom: 10px;
+      }
 
-          if (this.phone.length != 11) {
-            return this.$toasted.show("请输入 11 位手机号");
-          }
+      .form-field input {
+        font-size: 16px;
+        padding-bottom: 10px;
+        color: #fff;
+        transition: all 0.3s;
+        border-bottom: 1px solid #fff;
+      }
 
-          if (/^[0-9]*$/.test(this.phone) == false) {
-            return this.$toasted.show("手机号只能有数字");
-          }
+      .form-field input:focus {
+        border-bottom: 1px solid #f2e205 !important;
+      }
 
-          fetch(url, {
-            method: "POST",
-            body: JSON.stringify(payload),
-            headers: getHeaders(),
-          })
-            .then((res) => res.json())
-            .catch((err) => {
-              this.$toasted.show(err);
-            })
-            .then((res) => {
-              if (res.error_code) {
-                return this.$toasted.show(res.message);
-              }
+      .form-field.show-border input:focus {
+        border-bottom: none !important;
+      }
 
-              this.$toasted.show("验证码发送成功~");
-              this.sending = true;
-              this.startTimer();
-              this.key = res.key;
-            });
-        },
-        startTimer: function () {
-          var timer = setInterval(() => {
-            if (this.clock <= 0) {
-              clearInterval(timer);
-              this.sending = false;
-              this.clock = 60;
-            }
-            this.clock--;
-          }, 1000);
-        },
-        getAgreement: function () {
-          const url = `${this.baseURL}/api/trader/message?message_type_key=user_agreement`;
+      .form-field > .form-input-group {
+        display: flex;
+        justify-content: space-between;
+        /* border-bottom: 1px solid #FFF; */
+      }
 
-          fetch(url, {
-            method: "get",
-            headers: getHeaders(),
-          })
-            .then((res) => res.json())
-            .catch((err) => {
-              this.$toasted.show(err);
-            })
-            .then((res) => {
-              console.log("res", res);
-              if (res && res.error_code) {
-                return this.$toasted.show(res.message);
-              }
-              this.agreement = res.results[0];
-            });
-        },
-        onFieldFocus: function (field) {
-          this.fieldActive = field;
-        },
-        onFieldBlur: function () {
-          this.fieldActive = "";
-        },
-        register: function (payload) {
-          const url = `${this.baseURL}/api/trader/register`;
-          fetch(url, {
-            method: "POST",
-            body: JSON.stringify(payload),
-            headers: getHeaders(),
-          })
-            .then((res) => res.json())
-            .catch((err) => {
-              this.$toasted.show(err);
-            })
-            .then((res) => {
-              if (res && res.error_code) {
-                return this.$toasted.show(res.message);
-              }
+      .form-field > .form-input-group.flex-column {
+        flex-direction: column;
+        margin-bottom: 32px;
+        flex-basis: 48%;
+      }
 
-              this.$toasted.show("注册成功~");
-              this.resetForm();
-            });
-        },
-        getValidation: function (payload) {
-          var errMsg = "";
+      .form-field > .form-input-group.flex-column label {
+        color: #fff;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
 
-          if (!payload.phone) {
-            return "请输入手机号";
-          }
+      .form-field > .form-input-group input {
+        flex: 1;
+      }
 
-          if (/^[0-9]*$/.test(this.phone) == false) {
-            return this.$toasted.show("手机号只能有数字");
-          }
+      .form-field > .form-input-group button {
+        background-color: #373e47;
+        font-size: 17px;
+        color: #fff;
+        padding: 3px 16px;
+        cursor: pointer;
+        margin-bottom: 10px;
+      }
 
-          if (payload.phone.length != 11) {
-            return "请输入 11 位手机号";
-          }
+      .submit {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 82px;
+      }
 
-          if (!payload.code) {
-            return "请输入验证码";
-          }
+      .submit button {
+        color: #f2e205;
+        border: 3px solid #f2e205;
+        font-style: 18px;
+        font-weight: 500;
+        padding: 16px 50px;
+        background-color: #1a1c20;
+        outline: none;
+        cursor: pointer;
+      }
 
-          if (!payload.first_name) {
-            return "请输入姓氏";
-          }
+      .agreement-page {
+        color: #fff;
+        text-align: center;
+        width: 100vw;
+      }
 
-          if (!payload.last_name) {
-            return "请输入姓名";
-          }
+      .agreement-page .agreement-title {
+        font-size: 20px;
+        position: relative;
+      }
 
-          if (!payload.password) {
-            return "请输入密码";
-          }
+      .agreement-page .agreement-title svg {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        left: 10px;
+        cursor: pointer;
+      }
 
-          if (!payload.invite_code.trim()) {
-            return "请输入邀请码";
-          }
+      .agreement-page .agreement-content {
+        font-size: 16px;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
+    <script
+      crossorigin="anonymous"
+      integrity="sha384-5B8/4F9AQqp/HCHReGLSOWbyAOwnJsPrvx6C0+VPUr44Olzi99zYT1xbVh+ZanQJ"
+      src="https://lib.baomitu.com/fetch/3.0.0/fetch.min.js"
+    ></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+    <!-- production version, optimized for size and speed -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://unpkg.com/vue-toasted"></script>
+  </head>
 
-          if (
-            payload.password.trim().length < 6 ||
-            payload.password.trim().length > 20
-          ) {
-            return "请输入 6-20 位字母和数字组合和密码";
-          }
+  <body>
+    <div id="app">
+      <div v-show="showRegisterPage" class="register-page">
+        <section class="form-field">
+          <label for="phone">手机号</label>
+          <input type="text" v-model.trim="phone" placeholder="请输入手机号" />
+        </section>
+        <section
+          :class='["form-field", fieldActive == "code" ? "border-bottom-active" : "", "show-border"]'
+        >
+          <label for="code">验证码</label>
+          <section :class='["form-input-group"]'>
+            <input
+              class="hide-border"
+              type="text"
+              v-model.trim="code"
+              placeholder="请输入验证码"
+              @focus="onFieldFocus('code')"
+              @blur="onFieldBlur"
+            />
+            <button @click="sendSMS" :disabled="sending ? true : false">
+              发送短信 {{ sending ? clock + 's' : ''}}
+            </button>
+          </section>
+        </section>
+        <section class="form-field flex-row">
+          <section class="form-input-group flex-column">
+            <label for="">姓</label>
+            <input
+              type="text"
+              v-model.trim="last_name"
+              placeholder="请输入姓氏"
+            />
+          </section>
+          <section class="form-input-group flex-column">
+            <label for="">名</label>
+            <input
+              type="text"
+              v-model.trim="first_name"
+              placeholder="请输入姓名"
+            />
+          </section>
+        </section>
+        <section class="form-field">
+          <label for="password">密码</label>
+          <input
+            type="password"
+            v-model.trim="password"
+            placeholder="请输入6-20位字母和数字组合的密码"
+          />
+        </section>
+        <section class="form-field">
+          <label for="confirm_password">确认密码</label>
+          <input
+            type="password"
+            v-model.trim="confirm_password"
+            placeholder="请再次输入密码"
+          />
+        </section>
+        <section class="form-field">
+          <label for="invite_code">邀请码</label>
+          <input
+            :disabled="disabledInviteCode"
+            type="text"
+            v-model.trim="invite_code"
+            placeholder="请填写机构/IB经纪人编码(邀请码)"
+          />
+        </section>
+        <section class="register-declaration">
+          <input
+            type="checkbox"
+            id="isRead"
+            value="1"
+            v-model="checkedAgreement"
+          />
+          我已经阅读并同意&nbsp;<a @click="togglePage">
+            <strong>合作协议</strong>
+          </a>
+        </section>
+        <section class="submit" @click="onSubmit">
+          <button>注册</button>
+        </section>
+      </div>
 
-          if (payload.password != this.confirm_password) {
-            return "兩次输入的密码有误";
-          }
+      <div class="agreement-page" v-show="!showRegisterPage">
+        <div class="agreement-title">
+          <span @click="togglePage">
+            <svg
+              t="1588953794190"
+              class="icon"
+              viewBox="0 0 1024 1024"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              p-id="1160"
+              width="200"
+              height="200"
+            >
+              <path
+                d="M640 674.133333l-166.4-166.4L640 341.333333a41.258667 41.258667 0 0 0 0-59.733333 41.258667 41.258667 0 0 0-59.733333 0l-196.266667 196.266667a41.258667 41.258667 0 0 0 0 59.733333l196.266667 196.266667A42.24 42.24 0 1 0 640 674.133333z"
+                fill="#FFFFFF"
+                p-id="1161"
+              ></path>
+            </svg>
+          </span>
 
-          return errMsg;
-        },
-        onSubmit: function () {
-          var payload = {
-            phone: this.phone,
-            first_name: this.first_name,
-            last_name: this.last_name,
-            password: this.password,
-            key: this.key,
-            code: this.code,
-            invite_code: this.invite_code,
+          <p>{{agreement.title}}</p>
+        </div>
+        <div class="agreement-content" v-html="agreement.content"></div>
+      </div>
+    </div>
+    <script>
+      const getHeaders = function (
+        config = { "Content-Type": "application/json" }
+      ) {
+        return new Headers(config);
+      };
+      Vue.use(Toasted, {
+        position: "top-center",
+        duration: 1000,
+      });
+
+      var app = new Vue({
+        el: "#app",
+        data: function () {
+          return {
+            baseURL: "http://api.cangshu360.com",
+            phone: undefined,
+            fieldActive: "",
+            code: undefined,
+            last_name: undefined,
+            first_name: undefined,
+            last_name: undefined,
+            password: undefined,
+            confirm_password: undefined,
+            key: undefined,
+            code: undefined,
+            invite_code: undefined,
+            sending: false,
+            clock: 60,
+            showRegisterPage: true,
+            agreement: {},
+            disabledInviteCode: false,
+            checkedAgreement: [],
           };
-
-          var errMsg = this.getValidation(payload);
-
-          if (errMsg) {
-            return this.$toasted.show(errMsg);
-          }
-
-          if (this.checkedAgreement.length != 1) {
-            return this.$toasted.show(`请先阅读并同意合作协议`);
-          }
-
-          console.log("payload", JSON.stringify(payload));
-          this.register(payload);
         },
-      },
-    });
-  </script>
-</body>
 
+        created: function () {
+          var searchObj = this.parseSearch(location.search);
+          if (searchObj.invite_code) {
+            this.invite_code = searchObj.invite_code;
+            this.disabledInviteCode = true;
+          }
+
+          var hostArr = location.host.split(".");
+          this.baseURL = `${window.location.protocol}//api.${
+            hostArr[hostArr.length - 2]
+          }.com`;
+
+          this.getAgreement();
+        },
+        methods: {
+          parseSearch: function (raw) {
+            var _searchObj = {};
+            if (!raw) return _searchObj;
+            var search = raw.substring(1).split("&");
+            for (var i = 0; i < search.length; i++) {
+              var items = search[i].split("=");
+              _searchObj[items[0]] = items[1];
+            }
+
+            return _searchObj;
+          },
+          resetForm: function () {
+            this.phone = undefined;
+            this.code = undefined;
+            this.last_name = undefined;
+            this.first_name = undefined;
+            this.last_name = undefined;
+            this.password = undefined;
+            this.confirm_password = undefined;
+            this.key = undefined;
+            this.code = undefined;
+            this.invite_code = undefined;
+            this.sending = false;
+          },
+          togglePage: function () {
+            this.showRegisterPage = !this.showRegisterPage;
+          },
+          sendSMS: function () {
+            const url = `${this.baseURL}/api/trader/send-register-sms`;
+            const payload = { phone: this.phone };
+
+            if (!this.phone) {
+              return this.$toasted.show("请输入手机号");
+            }
+
+            if (this.phone.length != 11) {
+              return this.$toasted.show("请输入 11 位手机号");
+            }
+
+            if (/^[0-9]*$/.test(this.phone) == false) {
+              return this.$toasted.show("手机号只能有数字");
+            }
+
+            fetch(url, {
+              method: "POST",
+              body: JSON.stringify(payload),
+              headers: getHeaders(),
+            })
+              .then((res) => res.json())
+              .catch((err) => {
+                this.$toasted.show(err);
+              })
+              .then((res) => {
+                if (res.error_code) {
+                  return this.$toasted.show(res.message);
+                }
+
+                this.$toasted.show("验证码发送成功~");
+                this.sending = true;
+                this.startTimer();
+                this.key = res.key;
+              });
+          },
+          startTimer: function () {
+            var timer = setInterval(() => {
+              if (this.clock <= 0) {
+                clearInterval(timer);
+                this.sending = false;
+                this.clock = 60;
+              }
+              this.clock--;
+            }, 1000);
+          },
+          getAgreement: function () {
+            const url = `${this.baseURL}/api/trader/message?message_type_key=user_agreement`;
+            return fetch(url, {
+              method: "get",
+              headers: getHeaders(),
+            })
+              .then((res) => res.json())
+              .catch((err) => {
+                this.$toasted.show(err);
+              })
+              .then((res) => {
+                if (res && res.error_code) {
+                  return this.$toasted.show(res.message);
+                }
+                this.agreement = res.results[0];
+              });
+          },
+          onFieldFocus: function (field) {
+            this.fieldActive = field;
+          },
+          onFieldBlur: function () {
+            this.fieldActive = "";
+          },
+          register: function (payload) {
+            const url = `${this.baseURL}/api/trader/register`;
+            fetch(url, {
+              method: "POST",
+              body: JSON.stringify(payload),
+              headers: getHeaders(),
+            })
+              .then((res) => res.json())
+              .catch((err) => {
+                this.$toasted.show(err);
+              })
+              .then((res) => {
+                if (res && res.error_code) {
+                  return this.$toasted.show(res.message);
+                }
+
+                this.$toasted.show("注册成功~");
+                this.resetForm();
+              });
+          },
+          getValidation: function (payload) {
+            var errMsg = "";
+
+            if (!payload.phone) {
+              return "请输入手机号";
+            }
+
+            if (/^[0-9]*$/.test(this.phone) == false) {
+              return this.$toasted.show("手机号只能有数字");
+            }
+
+            if (payload.phone.length != 11) {
+              return "请输入 11 位手机号";
+            }
+
+            if (!payload.code) {
+              return "请输入验证码";
+            }
+
+            if (!payload.first_name) {
+              return "请输入姓氏";
+            }
+
+            if (!payload.last_name) {
+              return "请输入姓名";
+            }
+
+            if (!payload.password) {
+              return "请输入密码";
+            }
+
+            if (!payload.invite_code.trim()) {
+              return "请输入邀请码";
+            }
+
+            if (
+              payload.password.trim().length < 6 ||
+              payload.password.trim().length > 20
+            ) {
+              return "请输入 6-20 位字母和数字组合和密码";
+            }
+
+            if (payload.password != this.confirm_password) {
+              return "兩次输入的密码有误";
+            }
+
+            return errMsg;
+          },
+          onSubmit: function () {
+            var payload = {
+              phone: this.phone,
+              first_name: this.first_name,
+              last_name: this.last_name,
+              password: this.password,
+              key: this.key,
+              code: this.code,
+              invite_code: this.invite_code,
+            };
+
+            var errMsg = this.getValidation(payload);
+
+            if (errMsg) {
+              return this.$toasted.show(errMsg);
+            }
+
+            if (this.checkedAgreement.length != 1) {
+              return this.$toasted.show(`请先阅读并同意合作协议`);
+            }
+
+            // console.log("payload", JSON.stringify(payload));
+            this.register(payload);
+          },
+        },
+      });
+    </script>
+  </body>
 </html>
