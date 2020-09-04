@@ -348,11 +348,10 @@
             this.disabledInviteCode = true;
           }
 
-          var hostArr = location.host.split(".");
-          this.baseURL = `${window.location.protocol}//api.${
-            hostArr[hostArr.length - 2]
-          }.com`;
-
+          const domainNames = location.host.split(".");
+          domainNames[0] = "api";
+          const apiHost = domainNames.join(".");
+          this.baseURL = `${window.location.protocol}//${apiHost}`;
           this.getAgreement();
         },
         methods: {
