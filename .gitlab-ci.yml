@@ -1,0 +1,17 @@
+stages:
+  - deploy
+
+
+deploy_prod_job:
+  stage: deploy
+  only:
+    refs:
+      - master
+  script:
+    - apt-get update -y
+    - apt-get -y install rsync
+    - echo "$PROD_SSH_PRIVATE_KEY" > id_rsa
+    - chmod 700 id_rsa
+    - mkdir "${HOME}/.ssh"
+    - echo "${PROD_SSH_HOST_KEY}" > "${HOME}/.ssh/known_hosts"
+    - rsync -hrvz --delete -e "ssh -i id_rsa" moon-register.html root@47.52.157.137:/www/wwwroot/register.trading8a.com
