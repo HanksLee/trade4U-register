@@ -269,7 +269,7 @@
         <section class="register-declaration">
           <input type="checkbox" id="isRead" value="1" v-model="checkedAgreement" />
           我已经阅读并同意&nbsp;<a @click="togglePage">
-            <strong>合作协议</strong>
+            <strong>用户协议</strong>
           </a>
         </section>
         <section class="submit" @click="onSubmit">
@@ -468,6 +468,7 @@
 
               this.$toasted.show("注册成功~");
               this.resetForm();
+              this.goBack();
             });
         },
         getValidation: function (payload) {
