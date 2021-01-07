@@ -467,8 +467,12 @@
               }
 
               this.$toasted.show("注册成功~");
-              this.resetForm();
-              this.goBack();
+              
+              setTimeout(()=>{
+                this.goBack();
+                this.resetForm();
+              },2000)
+              
             });
         },
         getValidation: function (payload) {
